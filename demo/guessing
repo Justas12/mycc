@@ -1,0 +1,73 @@
+boolean guess_int(int x) {
+	int target = 999;
+	boolean d = false;
+	if (x == target) {
+		write "Well done!\n";
+		d = true;
+	}
+	else if (x > target) {
+		write "Too much!\n";
+	}
+	else {
+		write "Too less!\n";
+	};
+	return d;
+}
+
+boolean guess_str(string x) {
+	string target = "zaza";
+	boolean d = false;
+	if (x == target) {
+		write "Well done!\n";
+		d = true;
+	}
+	else {
+		write "Nope!\n";
+	};
+	return d;
+}
+boolean guess_float(float x) {
+	float target = 3.14;
+	boolean d = false;
+	if (x == target) {
+		write "Well done!\n";
+		d = true;
+	}
+	else if (x > target) {
+		write "Too much!\n";
+	}
+	else {
+		write "Too less!\n";
+	};
+	return d;
+}
+
+int main() {
+	string NEWLINE = "\n";
+
+	// string
+	write "Guess a string(4 letters, consists of a and z only...)";
+	write NEWLINE;
+	string str;
+	do {
+		read str;
+	}while(guess_str(str) != true);
+
+	// int
+	write "Guess a number between 1 and 1000:";
+	write NEWLINE;
+	int a;
+	do {
+		read a;
+	}while(guess_int(a) != true);
+
+	// float
+	write "Guess a float 3.???";
+	write NEWLINE;
+	float val;
+	do {
+		read val;
+	}while(guess_float(val) != true);
+
+	return 0;
+}

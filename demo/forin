@@ -1,0 +1,13 @@
+int main() {
+	int k;
+	string row;
+	for row in ["first row", "second row", "third row"] {
+		write row, " -> [0";
+		for (k = 1; k <= 10; k+=1) {
+			write ", ", k;
+		};
+		write "]\n";
+	};
+	
+	return 0;
+}

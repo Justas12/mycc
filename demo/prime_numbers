@@ -1,0 +1,28 @@
+boolean isPrimeNumber(int n) {
+   boolean isPrime = true;
+   int i = 2;
+   while(i <= n/2) {
+   		if (n%i == 0) {
+	         isPrime = false;
+	         return isPrime;
+        };
+        i = i + 1;
+   }; 
+   return isPrime;
+}
+
+int main() {
+   string NEWLINE = "\n";
+   int top = 100;
+   write "prime numbers (up to ", top, "):", NEWLINE;
+   int n = 1;
+   while(n <= top) {
+     if (isPrimeNumber(n)) {
+       write n;
+       write NEWLINE;
+     };
+     n = n+1;
+   };
+
+   return 0;
+}

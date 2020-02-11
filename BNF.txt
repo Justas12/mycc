@@ -1,0 +1,299 @@
+﻿// Author: Justas Janušis, Informatika, 3k. 1gr.
+
+
+- Mainas neturetu tureti specialios sintakses.											         // done.
+- reikia: read a, b, c 																	               // done.
+- reikia: write a + b, c + d															               // done.
+- for'o in dalis bereikalingai per daug apribota su <list>; geriau naudoti <expr>		// done.
+- for'o sintakse nesutampa su while, do/while ir if (del skliausteliu)                 // done.
+- nera else if                                                                         // done.
+- operatoriu terminaliai simboliai neideti i kabutes                                   // done.
+- nera unariniu operatoriu: -a, !a                                                     // done.
+- <call_parameters> blogas vardas (ten arguments, ne parameters)                       // done.
+- <call_parameters> neapibrezta                                                        // done.
+- <identifier> turetu galeti prasideti su _                                            // done.
+- reiketu graziau sutvarkyti <identifier> (dabar chaosas <next_symbol> taisykleje)     // done.
+- reikia daugiau floatu: .5     5.   5e6   5.6e-7                                      // done.
+- stringinese literose reikia daugiau simboliu: !@#$%^&*( ir t.t.                      // done.
+- stringuose reikia sugebeti ideti kabute: "aaaa\"bbbb"                                // done.
+- reikia apibrezti komentarus (komentaru taisykle liks nepanaudota)                    // done.
+
+/*-------------------------------------------------------
+------------------ Program ------------------------------
+---------------------------------------------------------*/
+<program> ::= <functions>
+<block> ::= '{' <statements> '}' | '{' '}'
+
+/*--------------------------------------------------------
+------------------------- Functions ----------------------
+---------------------------------------------------------*/
+
+<functions> ::= <function> <functions> | <function>
+<function> ::= <type_specifier> <identifier> '(' <parameters> ')' <block> | <type_specifier> <identifier> '(' ')' <block>
+
+<parameters> ::= <parameter> ',' <parameters> | <parameter>
+<parameter> ::= <type_specifier> <identifier>
+
+/*-------------------------------------------------------
+------------------------- Statements ---------------------
+---------------------------------------------------------*/
+<statements> ::= <statement> ';' <statements> | <statement> ';'
+<statement> ::= <simple_statement> | <control_statement> | <function_call> | <jump_statement>
+
+<simple_statement> ::= <var_declaration> | <io>
+<control_statement> ::= <loop_for> | <loop_for_in> | <loop_while> | <loop_do_while> | <statement_if>
+<function_call> ::= <identifier> '(' <expressions> ')' | <identifier> '(' ')'
+<jump_statement> ::= 'continue' | 'break' | 'return' | 'return' <expression>
+
+/*-------------------------------------------------------
+---------------------- Simple Statments -----------------
+---------------------------------------------------------*/
+<var_declaration> ::= <type_specifier> <identifier> '=' <expression> | <type_specifier> <identifier>
+<io> ::= <input> | <output>
+<input> ::= 'read' <identifiers>
+<output> ::= 'write' <expressions>
+
+/*-------------------------------------------------------
+---------------------- Control Statments ----------------
+---------------------------------------------------------*/
+<loop_for_in> ::= 'for' <identifier> 'in' '[' <expressions> ']' <block>
+<loop_for> ::= for '(' <expression> ';' <expression> ';' <expression> ')' <block>
+
+<loop_while> ::= 'while' '(' <expression> ')' <block>
+<loop_do_while> ::= 'do' <block> 'while' '(' <expression> ')'
+<statement_if> ::= 'if' '(' <expression> ')' <block> | 'if' '(' <expression> ')' <block> 'else' <block> | 'if' '(' <expression> ')' <block> 'else' <statement_if>	
+
+/*-------------------------------------------------------
+---------------------- Expressions ----------------------
+---------------------------------------------------------*/
+<assignment_expression> ::= <logical_or_expression> | <unary_expression> <assignment_operator> <assignment_expression>
+<logical_or_expression> ::= <logical_and_expression> | <logical_or_expression> '||' <logical_and_expression>
+<logical_and_expression> ::= <equality_expression> | <logical_and_expression> '&&' <equality_expression>
+<equality_expression> ::= <relational_expression> | <equality_expression> '==' <relational_expression> | <equality_expression> '!=' <relational_expression>
+<relational_expression> ::= <additive_expression>
+                          | <relational_expression> '<' <additive_expression>
+                          | <relational_expression> '>' <additive_expression>
+                          | <relational_expression> '<=' <additive_expression>
+                          | <relational_expression> '>=' <additive_expression>
+<additive_expression> ::= <multiplicative_expression> | <additive_expression> '+' <multiplicative_expression> | <additive_expression> '-' <multiplicative_expression>
+<multiplicative_expression> ::= <unary_expression>
+							  | <multiplicative_expression> '*' <unary_expression>
+							  | <multiplicative_expression> '/' <unary_expression>
+							  | <multiplicative_expression> '%' <unary_expression>
+<unary_expression> ::= <primary_expression> | <unary_operator> <unary_expression>                  
+<primary_expression> ::= <identifier> | <constant> | <function_call> | '(' <expression> ')'
+ 
+/*-------------------------------------------------------
+---------------------- Types, Utilities, Etc... -----------------
+---------------------------------------------------------*/
+<type_specifier> ::= 'void' | 'int' | 'float' | 'boolean' | 'string'
+<assignment_operator> ::== '=' | '*=' | '+=' | '-=' | '/='
+<unary_operator> ::== '*' | '&' | '!' | '-'
+<constant> ::= <int_constant>
+             | <float_constant>
+             | <string_constant>
+             | <boolean_constant>
+<int_constant> ::= '-' <int_literal> | <int_literal>
+<float_constant> ::= '-' <float_literal> | <float_literal>
+<string_constant> ::= <string_literal>
+<boolean_constant> ::= <boolean_litaral>
+
+<identifiers> ::= <identifier> ',' <identifiers> | <identifier>
+<identifier> ::= <non_digit> | <identifier> <next_symbol>
+<non_digit> ::= <letter> | '_'
+<next_symbol> ::= <non_digit> | <digit>
+
+<digits> ::= <digit> <digits> | <digit>
+<digit> ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+<letters> ::= <letter> <letters> | <letter>
+<letter> ::= 'a' | 'b' | ... | 'z' | 'A' | 'B' | ... | 'Z'
+
+<expressions> ::= <expression> ',' <expressions> | <expression>
+<expression> ::= <assignment_expression>
+
+<int_literal> ::= <digits>
+
+<float_literal> ::= <fractional_constant> | <fractional_constant> <exponent> | <digits> <exponent>
+<fractional_constant> ::= '.' <digits> | <digits> '.' <digits> | <digits> '.'
+<exponent> ::= 'e' <sign> <digits> | 'e' <digits>
+<sign> ::= '+' | '-'
+
+<string_literal> ::= '\"' <chars> '\"' | '\"' '\"'
+<chars> ::= <char> <chars> | <char>
+<char> ::= ' ' | '!' | '#' | '$' | '%' | '^' | '&' | '*' | ')' | '(' | ',' | '.' | ';' | '`' | '-' | '=' | '~' | '[' | ']' | '{' | '}' | <letter> | <digit> | '\\' <esc_char>
+<esc_char> ::= '\"' | '\\' | 'n' | 't'
+
+<boolean_litaral> ::= 'true' | 'false'
+
+<single-line_comment> ::= '//' <chars>
+<multi-line_comment> ::= '/*' <chars> '*/'
+
+/*-------------------------------------------------------
+---------------------- Program Example ------------------
+---------------------------------------------------------*/
+
+void printOnlyEvenNumbers(int n) {  // Print only even numbers up to n
+   int i = 0;
+   while(true) {
+      if(i%2 != 0) {
+         continue;
+      }
+      else {
+         printMsg(i);
+      };
+      if(i == n) {
+         break;
+      };
+      i = i+1;
+   };
+}
+
+boolean greaterThan(float a, float b) { // True if a is greater than b
+   if(a > b) {
+      return a;
+   };
+   return b;
+}
+
+int magicNumber(int a, int b, int c) {
+	return a + b * c / a - b;
+}
+
+void empty()
+{
+}
+
+void main() {
+   string name;
+   string welcome;
+   
+   write "enter your name...";
+   read name;
+   welcome = "hello" + name;
+   write welcome;
+   
+   do {
+      write "enter something... (-1 to escape)";
+      read input;
+      write "you typed: " + input;
+   }while(input != -1);
+   
+   for i in ( greaterThan(5.75, 9.00), greaterThan(5.75, 5.00), greaterThan(5.75, 17.23) ) { // false, true, false
+      write i;
+   };
+	
+   write "enter ", "three ", "numbers:";
+	read a, b, c;
+	write magicNumber(a, b, c);
+
+}
+
+if((foo(i%2 != 0))+7/true||x) {
+   continue;
+}
+else {
+	printMsg(i);
+};
+
+<statement> =>
+<control_statement> =>
+<statement_if> =>
+('if' '(' <expression> ')' <block> 'else' <block>) =>
+('if' '(' <logical_or_expression> ')' <block> 'else' <block>) =>
+('if' '(' <logical_or_expression> '||' <logical_and_expression> ')' <block> 'else' <block>) =>
+...
+...
+...
+('if' '(' <logical_or_expression> '||' <primary_expression> ')' <block> 'else' <block>) =>
+('if' '(' <logical_or_expression> '||' <identifier> ')' <block> 'else' <block>) =>
+('if' '(' <logical_or_expression> '||' x ')' <block> 'else' <block>) =>
+('if' '(' <logical_and_expression> '||' x ')' <block> 'else' <block>) =>
+...
+...
+...
+('if' '(' <additive_expression> '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' <multiplicative_expression> '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' <multiplicative_expression> '/' <unary_expression> '||' x ')' <block> 'else' <block>) =>	
+('if' '(' <additive_expression> '+' <multiplicative_expression> '/' <primary_expression> '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' <multiplicative_expression> '/' <constant> '||' x ')' <block> 'else' <block>) =>	
+('if' '(' <additive_expression> '+' <multiplicative_expression> '/' <boolean_constant> '||' x ')' <block> 'else' <block>) =>	
+('if' '(' <additive_expression> '+' <multiplicative_expression> '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' <additive_expression> '+' <unary_expression> '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' <additive_expression> '+' <primary_expression> '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' <constant> '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' <int_constant> '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' <additive_expression> '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+...
+...
+...
+('if' '(' <primary_expression> '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' <expression> ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' <logical_or_expression> ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+...
+...
+...
+('if' '(' '(' <primary_expression> ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' <function_call> ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' <identifier> '(' <arguments> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' <identifier> <next_symbol> '(' <arguments> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+...
+...
+...
+('if' '(' '(' foo '(' <arguments> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' <expressions> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <logical_or_expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>		
+...
+...
+...
+('if' '(' '(' foo '(' <equality_expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <equality_expression> '!=' <relational_expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' <equality_expression> '!=' <relational_expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+...
+...
+...
+('if' '(' '(' foo '(' <equality_expression> '!=' <primary_expression> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' <equality_expression> '!=' <constant> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <equality_expression> '!=' <int_constant> ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <equality_expression> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+...
+...
+...
+('if' '(' '(' foo '(' <multiplicative_expression> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <multiplicative_expression> '%' <unary_expression> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+...
+...
+...
+('if' '(' '(' foo '(' <multiplicative_expression> '%' <primary_expression> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' <multiplicative_expression> '%' <constant> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' <multiplicative_expression> '%' <int_constant> '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <multiplicative_expression> '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+...
+...
+...
+('if' '(' '(' foo '(' <primary_expression> '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' <identifier> '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' <block> 'else' <block>) =>	
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' <statements> '}' 'else' <block>) =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' <statement> ';' '}' 'else' <block>) =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' <jump_statement> ';' '}' 'else' <block>) =>	
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' <block>) =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' <statements> '}') =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' <statement> ';' '}') =>	
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' <function_call> ';' '}') =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' <identifier> '(' <arguments> ')' ';' '}') =>
+...
+...
+...
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' printMsg '(' <arguments> ')' ';' '}') =>
+...
+...
+...
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' printMsg '(' <expression> ')' ';' '}') =>	
+...
+...
+...
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' printMsg '(' <primary_expression> ')' ';' '}') =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' printMsg '(' <identifier> ')' ';' '}') =>
+('if' '(' '(' foo '(' i '%' 2 '!=' 0 ')' ')' '+' 7 '/' 'true' '||' x ')' '{' 'continue' ';' '}' 'else' '{' printMsg '(' i ')' ';' '}') =>
