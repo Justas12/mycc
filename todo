@@ -9,8 +9,7 @@
 7. unary operations									// done.
 8. code clean-up/optimize/fix						// done.
 6. Makefile											// done.
-
-10. publish
+10. publish											// done.
 
 future:
 1. pointer types ???

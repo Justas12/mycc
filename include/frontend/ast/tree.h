@@ -194,7 +194,6 @@ typedef struct branch_list {
 /****************   PROGRAM   ***************************/
 
 typedef struct program {
-  Token name;
   struct FUNCS_list* functions;
 } PROGRAM_node;
 
@@ -226,6 +225,6 @@ EXP_node* make_primary_const(Token, int);
 EXP_node* make_primary_call(Token, EXP_node_list*);
 TYPE_node* make_primary_type(int, Token);
 TYPE_node* make_pointer_type(TYPE_node*);
-PROGRAM_node* make_program_node(const char*);
+PROGRAM_node* make_program_node(FUNC_node_list*);
 
 #endif /* TREE_H */

@@ -673,9 +673,11 @@ FUNC_node_list* parse_functions() {
 	return head;
 }
 
-PROGRAM_node* parse_program(Token* tokens, const char* filename) {
-	PROGRAM_node* p = make_program_node("");
+PROGRAM_node* parse_program(Token* tokens) {
+	PROGRAM_node* p;
+	FUNC_node_list* funcs;
 	curr_token = tokens;
-	p->functions = parse_functions();
+	funcs = parse_functions();
+	p = make_program_node(funcs);
 	return p;
 }

@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]) {
 	if (scan_text(filename) == -1)
 		return 1;
 	tokens = get_tokens();
-	root = parse_program(tokens, argv[1]);
+	root = parse_program(tokens);
 	if (error == 1)
 		exit(1);
 	sym_program(root);

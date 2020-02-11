@@ -33,6 +33,6 @@ STMT_node* parse_stmt();
 PARAM_node_list* parse_params();
 FNDECL_node* parse_function();
 FUNC_node_list* parse_functions();
-PROGRAM_node* parse_program(Token*, const char*);
+PROGRAM_node* parse_program(Token*);
 
 #endif /* PARSER_H */

@@ -235,11 +235,8 @@ EXP_node* make_unary_exp(int kind, Token operator, EXP_node* operand) {
 };
 
 /************ CREATE PROGRAM NODE ********************/
-PROGRAM_node* make_program_node(const char* s) {
+PROGRAM_node* make_program_node(FUNC_node_list* f) {
   PROGRAM_node* p = malloc(sizeof(PROGRAM_node));
-  Token t;
-  t.value.str_val = malloc(sizeof(char)*strlen(s)+1);
-  strcpy(t.value.str_val, s);
-  p->name = t;
+  p->functions = f;
   return p;
 };
